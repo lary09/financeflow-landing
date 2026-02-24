@@ -2,7 +2,7 @@
 
 @import "tailwindcss";
 
-@theme {
+@theme inline {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 
   --color-primary-50: #eef2ff;
@@ -23,12 +23,6 @@
   --color-surface: #0a0a1a;
   --color-surface-light: #111127;
   --color-surface-card: #16163a;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
 }
 
 html {
@@ -75,27 +69,6 @@ body {
 .animated-gradient {
   background-size: 200% 200%;
   animation: gradient-shift 8s ease infinite;
-}
-
-/* Floating orb animation */
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0px) scale(1);
-  }
-
-  50% {
-    transform: translateY(-30px) scale(1.05);
-  }
-}
-
-.float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.float-delay {
-  animation: float 8s ease-in-out infinite 2s;
 }
 
 /* Glass morphism */

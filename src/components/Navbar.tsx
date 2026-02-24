@@ -41,7 +41,7 @@ export function Navbar() {
 
                 {/* CTA Buttons */}
                 <div className="hidden md:flex items-center gap-3">
-                    <a href="https://finance-flow-six.vercel.app/login" className="text-sm font-semibold text-slate-300 hover:text-white px-4 py-2 rounded-xl transition-colors">
+                    <a href="https://finance-flow-phi-ruby.vercel.app/login" className="text-sm font-semibold text-slate-300 hover:text-white px-4 py-2 rounded-xl transition-colors">
                         Log In
                     </a>
                     <a href="#pricing" className="text-sm font-bold text-white px-5 py-2.5 rounded-xl bg-linear-to-r from-primary-600 to-accent-600 hover:from-primary-500 hover:to-accent-500 shadow-lg shadow-primary-600/25 hover:shadow-primary-500/40 transition-all hover:scale-105 active:scale-95">
@@ -66,7 +66,7 @@ export function Navbar() {
                     <a href="#preview" className="block text-slate-300 hover:text-white font-medium py-2" onClick={() => setMobileOpen(false)}>Preview</a>
                     <a href="#pricing" className="block text-slate-300 hover:text-white font-medium py-2" onClick={() => setMobileOpen(false)}>Pricing</a>
                     <div className="pt-4 border-t border-white/5 space-y-3">
-                        <a href="https://finance-flow-six.vercel.app/login" className="block text-center text-slate-300 font-semibold py-2.5 rounded-xl border border-white/10">Log In</a>
+                        <a href="https://finance-flow-phi-ruby.vercel.app/login" className="block text-center text-slate-300 font-semibold py-2.5 rounded-xl border border-white/10">Log In</a>
                         <a href="#pricing" className="block text-center text-white font-bold py-2.5 rounded-xl bg-linear-to-r from-primary-600 to-accent-600">Get Started Free</a>
                     </div>
                 </motion.div>

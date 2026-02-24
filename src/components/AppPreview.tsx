@@ -1,5 +1,4 @@
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { TrendingUp, TrendingDown, ArrowUpRight } from 'lucide-react'
 
 const mockTransactions = [
@@ -10,154 +9,129 @@ const mockTransactions = [
     { name: 'Electric Bill', amount: -124.00, category: 'Utilities', icon: '⚡' },
 ]
 
-function AnimatedCounter({ target, prefix = '', suffix = '' }: { target: number; prefix?: string; suffix?: string }) {
-    const ref = useRef(null)
-    const isInView = useInView(ref, { once: true })
+const fadeUp = {
+    hidden: { opacity: 0, transform: 'translateY(30px)' },
+    visible: { opacity: 1, transform: 'translateY(0px)' },
+}
 
-    return (
-        <motion.span
-            ref={ref}
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-        >
-            {isInView ? (
-                <motion.span
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    {prefix}{target.toLocaleString()}{suffix}
-                </motion.span>
-            ) : `${prefix}0${suffix}`}
-        </motion.span>
-    )
+const fadeIn = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
 }
 
 export function AppPreview() {
-    const ref = useRef(null)
-    const isInView = useInView(ref, { once: true, margin: '-100px' })
-
     return (
-        <section id="preview" ref={ref} className="py-32 relative">
-            <div className="max-w-7xl mx-auto px-6">
+        <section id="preview" className="py-24 md:py-32">
+            <div className="max-w-6xl mx-auto px-6">
                 {/* Section header */}
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.8 }}
-                    className="text-center mb-16"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.5 }}
+                    variants={fadeUp}
+                    transition={{ duration: 0.6 }}
+                    className="text-center mb-12 md:mb-16"
                 >
                     <span className="text-sm font-bold text-primary-400 uppercase tracking-[0.2em] mb-4 block">Live Preview</span>
-                    <h2 className="text-4xl md:text-6xl font-black tracking-tight text-white mb-6">
+                    <h2 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight text-white mb-6">
                         See it in <span className="gradient-text">action</span>
                     </h2>
-                    <p className="text-lg text-slate-400 max-w-xl mx-auto font-medium">
+                    <p className="text-base md:text-lg text-slate-400 max-w-xl mx-auto font-medium">
                         A beautiful dashboard that makes managing money feel effortless.
                     </p>
                 </motion.div>
 
-                {/* Mock Dashboard */}
+                {/* Dashboard card */}
                 <motion.div
-                    initial={{ opacity: 0, y: 50, scale: 0.95 }}
-                    animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-                    transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] as const }}
-                    className="relative"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.1 }}
+                    variants={fadeUp}
+                    transition={{ delay: 0.1, duration: 0.6 }}
+                    className="rounded-2xl md:rounded-3xl border border-white/10 bg-surface-light/80 backdrop-blur-xl p-4 md:p-8 shadow-2xl shadow-black/40 glow-indigo"
                 >
-                    <div className="rounded-3xl border border-white/10 bg-surface-light/80 backdrop-blur-xl p-6 md:p-10 shadow-2xl shadow-black/40 glow-indigo">
-                        {/* Top stats row */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                            {[
-                                { label: 'Total Balance', value: 12847, prefix: '$', color: 'text-white', icon: null, change: '+12.5%' },
-                                { label: 'Income', value: 5350, prefix: '$', color: 'text-emerald-400', icon: TrendingUp, change: '+8.2%' },
-                                { label: 'Expenses', value: 2229, prefix: '$', color: 'text-rose-400', icon: TrendingDown, change: '-3.1%' },
-                                { label: 'Savings Rate', value: 58, prefix: '', suffix: '%', color: 'text-primary-400', icon: ArrowUpRight, change: '+5.4%' },
-                            ].map((stat) => (
-                                <motion.div
-                                    key={stat.label}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                                    transition={{ delay: 0.6, duration: 0.6 }}
-                                    className="p-5 rounded-2xl bg-white/[0.03] border border-white/5"
-                                >
-                                    <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-2">{stat.label}</p>
-                                    <div className="flex items-end justify-between">
-                                        <p className={`text-2xl md:text-3xl font-black ${stat.color}`}>
-                                            <AnimatedCounter target={stat.value} prefix={stat.prefix} suffix={stat.suffix || ''} />
-                                        </p>
-                                        {stat.icon && (
-                                            <span className={`text-xs font-bold ${stat.color} flex items-center gap-0.5`}>
-                                                <stat.icon className="h-3 w-3" />
-                                                {stat.change}
-                                            </span>
-                                        )}
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div>
-
-                        {/* Chart placeholder + Transactions */}
-                        <div className="grid md:grid-cols-5 gap-6">
-                            {/* Chart area */}
-                            <div className="md:col-span-3 p-6 rounded-2xl bg-white/[0.02] border border-white/5">
-                                <div className="flex items-center justify-between mb-6">
-                                    <h3 className="text-sm font-bold text-white uppercase tracking-wider">Spending Trend</h3>
-                                    <span className="text-xs text-slate-500 font-semibold">Last 7 days</span>
-                                </div>
-                                {/* Animated bars */}
-                                <div className="flex items-end justify-between h-40 gap-2">
-                                    {[65, 45, 80, 55, 90, 40, 70].map((h, i) => (
-                                        <motion.div
-                                            key={i}
-                                            initial={{ height: 0 }}
-                                            animate={isInView ? { height: `${h}%` } : {}}
-                                            transition={{ delay: 0.8 + i * 0.1, duration: 0.8, ease: [0.22, 1, 0.36, 1] as const }}
-                                            className="flex-1 rounded-xl bg-linear-to-t from-primary-600/40 to-primary-400/60 relative group cursor-pointer hover:from-primary-500/50 hover:to-primary-300/70 transition-colors"
-                                        >
-                                            <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                ${Math.round(h * 30)}
-                                            </div>
-                                        </motion.div>
-                                    ))}
-                                </div>
-                                <div className="flex justify-between mt-3">
-                                    {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
-                                        <span key={d} className="text-[10px] font-semibold text-slate-600 flex-1 text-center">{d}</span>
-                                    ))}
+                    {/* Top stats row */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
+                        {[
+                            { label: 'Total Balance', value: '$12,847', color: 'text-white', Icon: null, change: '+12.5%' },
+                            { label: 'Income', value: '$5,350', color: 'text-emerald-400', Icon: TrendingUp, change: '+8.2%' },
+                            { label: 'Expenses', value: '$2,229', color: 'text-rose-400', Icon: TrendingDown, change: '-3.1%' },
+                            { label: 'Savings Rate', value: '58%', color: 'text-primary-400', Icon: ArrowUpRight, change: '+5.4%' },
+                        ].map((stat) => (
+                            <div
+                                key={stat.label}
+                                className="p-3 md:p-5 rounded-xl md:rounded-2xl bg-white/[0.03] border border-white/5"
+                            >
+                                <p className="text-[10px] md:text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1 md:mb-2">{stat.label}</p>
+                                <div className="flex items-end justify-between">
+                                    <p className={`text-lg md:text-2xl font-black ${stat.color}`}>{stat.value}</p>
+                                    {stat.Icon && (
+                                        <span className={`text-[10px] font-bold ${stat.color} flex items-center gap-0.5`}>
+                                            <stat.Icon className="h-3 w-3" />
+                                            {stat.change}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
-
-                            {/* Recent transactions */}
-                            <div className="md:col-span-2 p-6 rounded-2xl bg-white/[0.02] border border-white/5">
-                                <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Recent</h3>
-                                <div className="space-y-3">
-                                    {mockTransactions.map((tx, i) => (
-                                        <motion.div
-                                            key={tx.name}
-                                            initial={{ opacity: 0, x: 20 }}
-                                            animate={isInView ? { opacity: 1, x: 0 } : {}}
-                                            transition={{ delay: 1.2 + i * 0.1, duration: 0.5 }}
-                                            className="flex items-center justify-between py-2"
-                                        >
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-lg">{tx.icon}</span>
-                                                <div>
-                                                    <p className="text-sm font-semibold text-white">{tx.name}</p>
-                                                    <p className="text-[10px] text-slate-500 font-medium">{tx.category}</p>
-                                                </div>
-                                            </div>
-                                            <span className={`text-sm font-bold ${tx.amount > 0 ? 'text-emerald-400' : 'text-slate-300'}`}>
-                                                {tx.amount > 0 ? '+' : ''}{tx.amount.toFixed(2)}
-                                            </span>
-                                        </motion.div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
 
-                    {/* Decorative glow behind */}
-                    <div className="absolute inset-0 -z-10 blur-3xl">
-                        <div className="absolute inset-0 bg-linear-to-r from-primary-600/10 via-accent-500/10 to-primary-600/10 rounded-3xl scale-105" />
+                    {/* Chart + Transactions */}
+                    <div className="grid md:grid-cols-5 gap-4 md:gap-6">
+                        {/* Chart area */}
+                        <div className="md:col-span-3 p-4 md:p-6 rounded-xl md:rounded-2xl bg-white/[0.02] border border-white/5">
+                            <div className="flex items-center justify-between mb-4 md:mb-6">
+                                <h3 className="text-xs md:text-sm font-bold text-white uppercase tracking-wider">Spending Trend</h3>
+                                <span className="text-[10px] text-slate-500 font-semibold">Last 7 days</span>
+                            </div>
+                            <div className="flex items-end justify-between h-28 md:h-40 gap-1.5 md:gap-2">
+                                {[65, 45, 80, 55, 90, 40, 70].map((h, i) => (
+                                    <motion.div
+                                        key={i}
+                                        initial={{ scaleY: 0 }}
+                                        whileInView={{ scaleY: 1 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.3 + i * 0.05, duration: 0.5 }}
+                                        style={{ height: `${h}%`, transformOrigin: 'bottom' }}
+                                        className="flex-1 rounded-lg md:rounded-xl bg-linear-to-t from-primary-600/40 to-primary-400/60 cursor-pointer hover:from-primary-500/50 hover:to-primary-300/70 transition-colors"
+                                    />
+                                ))}
+                            </div>
+                            <div className="flex justify-between mt-2 md:mt-3">
+                                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
+                                    <span key={d} className="text-[9px] md:text-[10px] font-semibold text-slate-600 flex-1 text-center">{d}</span>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Recent transactions */}
+                        <div className="md:col-span-2 p-4 md:p-6 rounded-xl md:rounded-2xl bg-white/[0.02] border border-white/5">
+                            <h3 className="text-xs md:text-sm font-bold text-white uppercase tracking-wider mb-3 md:mb-4">Recent</h3>
+                            <div className="space-y-2 md:space-y-3">
+                                {mockTransactions.map((tx, i) => (
+                                    <motion.div
+                                        key={tx.name}
+                                        initial="hidden"
+                                        whileInView="visible"
+                                        viewport={{ once: true }}
+                                        variants={fadeIn}
+                                        transition={{ delay: 0.4 + i * 0.05, duration: 0.3 }}
+                                        className="flex items-center justify-between py-1.5 md:py-2"
+                                    >
+                                        <div className="flex items-center gap-2 md:gap-3 min-w-0">
+                                            <span className="text-base md:text-lg shrink-0">{tx.icon}</span>
+                                            <div className="min-w-0">
+                                                <p className="text-xs md:text-sm font-semibold text-white truncate">{tx.name}</p>
+                                                <p className="text-[9px] md:text-[10px] text-slate-500 font-medium">{tx.category}</p>
+                                            </div>
+                                        </div>
+                                        <span className={`text-xs md:text-sm font-bold shrink-0 ml-2 ${tx.amount > 0 ? 'text-emerald-400' : 'text-slate-300'}`}>
+                                            {tx.amount > 0 ? '+' : ''}{tx.amount.toFixed(2)}
+                                        </span>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </motion.div>
             </div>

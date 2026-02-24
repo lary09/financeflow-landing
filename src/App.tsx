@@ -8,20 +8,22 @@ import { Footer } from './components/Footer'
 
 function App() {
   return (
-    <div className="relative">
-      {/* Background gradient orbs */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
-        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-primary-600/10 blur-[120px] float" />
-        <div className="absolute top-[40%] right-[-10%] w-[500px] h-[500px] rounded-full bg-accent-500/8 blur-[100px] float-delay" />
-        <div className="absolute bottom-[-10%] left-[30%] w-[400px] h-[400px] rounded-full bg-primary-500/6 blur-[80px] float" />
+    <div className="relative overflow-x-hidden">
+      {/* Background gradient orbs - fixed, subtle */}
+      <div className="fixed inset-0 pointer-events-none -z-10" aria-hidden="true">
+        <div className="absolute top-0 left-[-20%] w-[500px] h-[500px] rounded-full bg-primary-600/8 blur-[150px]" />
+        <div className="absolute top-[50%] right-[-15%] w-[400px] h-[400px] rounded-full bg-accent-500/6 blur-[120px]" />
+        <div className="absolute bottom-0 left-[20%] w-[350px] h-[350px] rounded-full bg-primary-500/5 blur-[100px]" />
       </div>
 
       <Navbar />
-      <Hero />
-      <Features />
-      <AppPreview />
-      <Pricing />
-      <FinalCTA />
+      <main>
+        <Hero />
+        <Features />
+        <AppPreview />
+        <Pricing />
+        <FinalCTA />
+      </main>
       <Footer />
     </div>
   )
